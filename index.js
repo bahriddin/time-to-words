@@ -1,6 +1,6 @@
 // expecting time to be a string in the format like '8:15' or '12:30'
 
-const HOUR_TO_WORD = {
+const HOUR_NAMES = {
   0: 'midnight',
   1: 'one',
   2: 'two',
@@ -51,26 +51,25 @@ const MINUTE_NAMES = {
 };
 
 function convertTimeToWords(time) {
-  // TODO: real code goes here!
-  if (time === '0:00') {
-    return 'midnight';
+  const [hours, minutes] = time.split(':').map((word) => parseInt(word, 10));
+
+  // midnight or midday case
+  if ([0, 12].includes(hours) && minutes === 0) {
+    return HOUR_NAMES[hours];
   }
 
-  if (time === '12:00') {
-    return 'midday';
+  // straight o'clock times
+  if (minutes === 0) {
+    return `${HOUR_NAMES[hours]} o'clock`;
   }
 
-  // Straight o'clock times
-  const [hours, minutes] = time.split(':').map((word) => parseInt(word));
-  if (minutes == 0) {
-    return `${HOUR_TO_WORD[hours]} o'clock`;
-  }
-
-  // minutes <= 30
+  // case where you say '... past ...'
   if (minutes <= 30) {
-    return `${MINUTE_NAMES[minutes]} past ${HOUR_TO_WORD[hours]}`;
+    return `${MINUTE_NAMES[minutes]} past ${HOUR_NAMES[hours]}`;
   }
-  return `${MINUTE_NAMES[60 - minutes]} to ${HOUR_TO_WORD[hours + 1]}`;
+
+  // case where you say '... to ...'
+  return `${MINUTE_NAMES[60 - minutes]} to ${HOUR_NAMES[hours + 1]}`;
 }
 
 module.exports = { convertTimeToWords };

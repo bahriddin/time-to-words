@@ -1,4 +1,4 @@
-const  { convertTimeToWords } = require('./index');
+const { convertTimeToWords } = require('./index');
 
 describe('Time to words', () => {
   it('Handles midnight', () => {
@@ -29,6 +29,7 @@ describe('Time to words', () => {
   it('Handles minutes before 30', () => {
     expect(convertTimeToWords('2:03')).toBe('three past two');
     expect(convertTimeToWords('3:11')).toBe('eleven past three');
+    expect(convertTimeToWords('0:29')).toBe('twenty nine past midnight');
   });
 
   it('Handles times after 30 mins - 2:45', () => {
